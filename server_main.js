@@ -7,5 +7,8 @@ const server = net.createServer((socket) =>{
     socket.on('data', (data) =>{
         console.log('received data : '+data);
     });
+    socket.on('end', function(){
+        console.log('disconnected');
+    });
 
 }).listen(3000);
