@@ -19,4 +19,19 @@ socket.on('data', (data) => {
 });
 
 
+const choiceAction = () =>{
+    console.log(`       input '1' or '2'\n  < 1. log in >   < 2. sign up >`);
+    readLine.on("line", line => {
+        if(line === '1'){
+            logIn();
+        }if(line === '2'){
+            signUp();
+        }else{
+            console.log(`다시입력하세요`);
+            choiceAction();
+        };
+    }).on("close", () => {
+        process.exit();
+    });
+}
 
