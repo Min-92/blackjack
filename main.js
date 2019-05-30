@@ -43,3 +43,8 @@ const signUp = ()=>{
 }
 
 
+const main = () =>{
+    choiceAction();
+}
+
+main();
