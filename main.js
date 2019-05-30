@@ -35,3 +35,11 @@ const choiceAction = () =>{
     });
 }
 
+const logIn = ()=>{
+    const user = UserManager.login();
+}
+const signUp = ()=>{
+    const user = UserManager.signUp();
+}
+
+
