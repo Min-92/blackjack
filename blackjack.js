@@ -11,9 +11,15 @@ module.exports = class Blackjack{
         this.deck;
     }
 
+    shuffleDeck(){
+        this.deck = this.dealer.shuffle(this.deck);
+    }
+
     startGame(){
         this.deck = getNewDeck();
         this.dealer = new Dealer();
+        shuffleDeck();
+        
     }
 
 
