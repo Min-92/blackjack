@@ -1,13 +1,24 @@
 const net = require('net');
 const fs = require('fs');
 
-
 const createUserDataFile = () =>{
     if(!fs.existsSync(`./data`)){
         fs.mkdirSync(`./data`);
     }
     fs.writeFileSync(`./data/userData.txt`,'','utf8');
     console.log('userData.txt has been created.');
+}
+
+const parseData = (data) => {
+    const dataArray = data.split('$');
+    const command = {};
+    switch(dataArray[0]){
+        case 'login' :
+            command.action = 'login';
+            command.id = dataArray[1];
+            command.pw = dataArray[2];
+    }
+    return command;
 }
 
 const server = net.createServer((socket) =>{
@@ -19,9 +30,11 @@ const server = net.createServer((socket) =>{
             createUserDataFile(); 
         }
         console.log('received data : '+data);
-        socket.write('false');
+        const command = JSON.stringify(parseData(data));
+
+        socket.write(`${command}`);
     });
-    
+
     socket.on('end', function(){
         console.log('disconnected');
     });
