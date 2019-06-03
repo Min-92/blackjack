@@ -24,6 +24,15 @@ class ServerMain{
         }
         return command;
     };
+    
+    isMember(command){
+        for(let value of this.userdata){
+            if(value.id === command.id && value.pw == command.pw){
+                return value;
+            }
+        }
+        return false;
+    }
 
     updateUserData(){
         this.userdata = JSON.parse(fs.readFileSync('./data/userData.txt').toString());
@@ -31,6 +40,8 @@ class ServerMain{
 
     login(command){
         this.updateUserData();
+        const result = this.isMember(command);
+        console.log(this.userdata);
         const obj = {};
         return obj;
     }
