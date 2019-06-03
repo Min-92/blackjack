@@ -38,14 +38,6 @@ class ServerMain {
         }
         return false;
     }
-    isMemberID(command) {
-        for (let value of this.userData) {
-            if (value.id === command.id) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     updateUserData() {
         this.userData = JSON.parse(fs.readFileSync('./data/userData.txt').toString());
@@ -66,7 +58,7 @@ class ServerMain {
 
     signUp(command) {
         this.updateUserData();
-        if (this.isMemberID(command)) {
+        if (this.isMemberer() !== false) {
             return false;
         };
         const tempUser = {
