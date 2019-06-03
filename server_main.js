@@ -1,4 +1,6 @@
 const net = require('net');
+const fs = require('fs');
+
 
 const server = net.createServer((socket) =>{
     console.log('connected');
@@ -6,6 +8,7 @@ const server = net.createServer((socket) =>{
     
     socket.on('data', (data) =>{
         console.log('received data : '+data);
+        socket.write('false');
     });
     socket.on('end', function(){
         console.log('disconnected');
