@@ -9,6 +9,7 @@ module.exports = class Blackjack{
         this.player = player;
         this.dealer;
         this.deck;
+        this.bettingMoney;
     }
 
     shuffleDeck(){
@@ -19,12 +20,22 @@ module.exports = class Blackjack{
         console.log(`Your money : ${this.player.money}`);
     }
     
+    betMoney(){
+        this.bettingMoney = Number(this.readlineSync.question(`베팅할 금액을 입력하세요. 소지금 : ${this.player.money}> `));
+        this.player.money -= this.bettingMoney;
+
+    }
 
     startGame(){
         console.log('Start game!');
         this.deck = getNewDeck();
         this.dealer = new Dealer();
         this.shuffleDeck();
+
+        this.betMoney();
+
+
+
         this.printPlayerMoney();
         
     }
