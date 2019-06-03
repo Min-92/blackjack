@@ -1,4 +1,5 @@
 const getNewDeck = require('./deck.js');
+const Dealer = require('./dealer.js');
 
 module.exports = class Blackjack{
     constructor(player,socket,readlineSync){
@@ -12,7 +13,7 @@ module.exports = class Blackjack{
 
     startGame(){
         this.deck = getNewDeck();
-
+        this.dealer = new Dealer();
     }
 
 
