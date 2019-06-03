@@ -12,13 +12,20 @@ module.exports = class Blackjack{
     }
 
     shuffleDeck(){
-        this.deck = this.dealer.shuffle(this.deck);
+        console.log('shuffling cards...');
+        this.deck = this.dealer.shuffleDeck(this.deck);
     }
+    printPlayerMoney(){
+        console.log(`Your money : ${this.player.money}`);
+    }
+    
 
     startGame(){
+        console.log('Start game!');
         this.deck = getNewDeck();
         this.dealer = new Dealer();
-        shuffleDeck();
+        this.shuffleDeck();
+        this.printPlayerMoney();
         
     }
 
