@@ -3,7 +3,7 @@ const Dealer = require('./dealer.js');
 const Player = require('./player.js');
 
 module.exports = class Blackjack{
-    constructor(user,socket,readlineSync){
+    constructor(userInfo,socket,readlineSync){
         this.socket = socket;
         this.readlineSync = readlineSync;
         this.userInfo = userInfo;
@@ -28,15 +28,20 @@ module.exports = class Blackjack{
         this.player = new Player(this.userInfo,this.readlineSync);
     }
 
+    dealCards(){
+        [this.player,this.deck] = this.dealer.dealCard(this.player,this.deck);
+        [this.dealer,this.deck] = this.dealer.dealCard(this.dealer,this.deck);
+        [this.player,this.deck] = this.dealer.dealCard(this.player,this.deck);
+        [this.dealer,this.deck] = this.dealer.dealCard(this.dealer,this.deck);
+    }
+
     startGame(){
         console.log('Start game!');
         this.initObjects();
         this.deck = this.shuffleDeck(this.deck);
-
-        this.dealCards();
-
+        
         this.bettingMoney = this.player.betMoney(this.bettingMoney);
-
+        this.dealCards();
         
 
 
