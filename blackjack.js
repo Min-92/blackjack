@@ -1,6 +1,7 @@
 const getNewDeck = require('./deck.js');
 const Dealer = require('./dealer.js');
 const Player = require('./player.js');
+const Table = require('./table.js');
 
 module.exports = class Blackjack{
     constructor(userInfo,socket,readlineSync){
@@ -10,29 +11,28 @@ module.exports = class Blackjack{
         
         this.player;
         this.dealer;
-        this.deck;
-        this.bettingMoney;
+        this.table;
     }
 
     shuffleDeck(deck){
         console.log('shuffling cards...');
         return this.dealer.shuffleDeck(deck);
     }
-    printPlayerMoney(){
-        console.log(`Your money : ${this.player.money}`);
+    printMoney(player){
+        console.log(`${player.id}'s money : ${player.money}`);
     }
 
     initObjects(){
-        this.deck = getNewDeck();
         this.dealer = new Dealer();
         this.player = new Player(this.userInfo,this.readlineSync);
+        this.table = new Table(getNewDeck());
     }
 
     dealCards(){
-        [this.player,this.deck] = this.dealer.dealCard(this.player,this.deck);
-        [this.dealer,this.deck] = this.dealer.dealCard(this.dealer,this.deck);
-        [this.player,this.deck] = this.dealer.dealCard(this.player,this.deck);
-        [this.dealer,this.deck] = this.dealer.dealCard(this.dealer,this.deck);
+        [this.player,this.table.deck] = this.dealer.dealCard(this.player,this.table.deck);
+        [this.dealer,this.table.deck] = this.dealer.dealCard(this.dealer,this.table.deck);
+        [this.player,this.table.deck] = this.dealer.dealCard(this.player,this.table.deck);
+        [this.dealer,this.table.deck] = this.dealer.dealCard(this.dealer,this.table.deck);
     }
 
     printHands(player){
@@ -84,19 +84,17 @@ module.exports = class Blackjack{
     startGame(){
         console.log('Start game!');
         this.initObjects();
-        this.deck = this.shuffleDeck(this.deck);
+        this.table.deck = this.shuffleDeck(this.table.deck);
         
-        this.bettingMoney = this.player.betMoney(this.bettingMoney);
+        this.table.money = this.player.betMoney(this.table.money);
         this.dealCards();
         this.printHands(this.dealer);
         this.printHands(this.player);
-        // console.log(this.countSum(this.dealer.hand));
-        // console.log(this.countSum(this.player.hand));
         
 
 
 
-        this.printPlayerMoney();
+        this.printMoney(this.table);
         
     }
 
