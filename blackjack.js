@@ -35,6 +35,14 @@ module.exports = class Blackjack{
         [this.dealer,this.deck] = this.dealer.dealCard(this.dealer,this.deck);
     }
 
+    printHands(player){
+        process.stdout.write(`${player.id}'s hands : `);
+        for(let value of player.hand){
+            process.stdout.write(`${value.suit}  ${value.number} `);
+        }
+        console.log('');
+    }
+
     startGame(){
         console.log('Start game!');
         this.initObjects();
@@ -42,6 +50,8 @@ module.exports = class Blackjack{
         
         this.bettingMoney = this.player.betMoney(this.bettingMoney);
         this.dealCards();
+        this.printHands(this.dealer);
+        this.printHands(this.player);
         
 
 
