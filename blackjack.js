@@ -21,12 +21,6 @@ module.exports = class Blackjack{
     printPlayerMoney(){
         console.log(`Your money : ${this.player.money}`);
     }
-    
-    betMoney(player){
-        this.bettingMoney = Number(this.readlineSync.question(`베팅할 금액을 입력하세요. 소지금 : ${player.money}> `));
-        console.log(`Betting Money : ${this.bettingMoney}`);
-        return player.money - this.bettingMoney;
-    }
 
     initObjects(){
         this.deck = getNewDeck();
@@ -41,13 +35,13 @@ module.exports = class Blackjack{
 
         this.dealCards();
 
-        this.player.money = this.betMoney(this.player);
+        this.bettingMoney = this.player.betMoney(this.bettingMoney);
 
         
 
 
 
-        // this.printPlayerMoney();
+        this.printPlayerMoney();
         
     }
 
