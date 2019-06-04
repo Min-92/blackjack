@@ -11,7 +11,12 @@ module.exports = class Dealer{
             newDeck[randomIndex] = randomCard;
         }
         return newDeck;
-    }    
+    }
+    
+    dealCard(targetPlayer,deck){
+        targetPlayer.hand.push(deck.pop());
+        return [targetPlayer,deck];
+    }
 
 
 }
