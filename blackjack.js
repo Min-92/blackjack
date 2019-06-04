@@ -64,25 +64,25 @@ module.exports = class Blackjack{
         let sum = [0, 0];
         let number;
         for (let value of hand) {
-            if (sum[0] === 0) {
-                number = this.replaceNumber(value.number);
-                for (let i = 0; i < number.length; i++) {
-                    sum[i] += number[i];
-                }
-            } else if (sum[1] === 0) {
-                number = this.replaceNumber(value.number);
-                if (number.length > 1) {
-                    sum[1] = sum[0] + number[1];
-                    sum[0] += number[0];
+            number = this.replaceNumber(value.number);
+            if (number.length === 2) {
+                if (sum[1] !== 0) {
+                    sum[0] += num[0];
+                    sum[1] += num[0];
                 } else {
-                    sum[0] += number[0];
+                    sum[1] = sum[0] + num[1];
+                    sum[0] += num[0];
                 }
             } else {
-                sum[0] += number[0];
-                sum[1] += number[0];
+                if (sum[1] !== 0) {
+                    sum[0] += num[0];
+                    sum[1] += num[0];
+                } else {
+                    sum[0] += num[0];
+                }
             }
         }
-        if (sum[1] === 0) {
+        if (sum[1] === 0 || sum[1] > 22) {
             return [sum[0]];
         } else {
             return sum;
@@ -90,7 +90,6 @@ module.exports = class Blackjack{
     }
 
     startGame(){
-        console.log('Start game!');
         this.initObjects();
         this.table.deck = this.shuffleDeck(this.table.deck);
         
@@ -98,11 +97,9 @@ module.exports = class Blackjack{
         this.dealCards(this.table.deck);
         this.printDealersHands(this.dealer);
         this.printHands(this.player);
-        
-
-
-
         this.printMoney(this.table);
+
+
         
     }
 
