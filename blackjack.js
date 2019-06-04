@@ -28,19 +28,27 @@ module.exports = class Blackjack{
         this.table = new Table(getNewDeck());
     }
 
-    dealCards(){
-        [this.player,this.table.deck] = this.dealer.dealCard(this.player,this.table.deck);
-        [this.dealer,this.table.deck] = this.dealer.dealCard(this.dealer,this.table.deck);
-        [this.player,this.table.deck] = this.dealer.dealCard(this.player,this.table.deck);
-        [this.dealer,this.table.deck] = this.dealer.dealCard(this.dealer,this.table.deck);
+    dealCards(deck){
+        console.log('dealing cards...');
+        [this.player,deck] = this.dealer.dealCard(this.player,deck);
+        [this.dealer,deck] = this.dealer.dealCard(this.dealer,deck);
+        [this.player,deck] = this.dealer.dealCard(this.player,deck);
+        [this.dealer,deck] = this.dealer.dealCard(this.dealer,deck);
     }
 
     printHands(player){
         process.stdout.write(`${player.id}'s hands : `);
         for(let value of player.hand){
-            process.stdout.write(`${value.suit}  ${value.number} `);
+            process.stdout.write(`[${value.suit}  ${value.number}] `);
         }
         console.log(` sum : ${this.countSum(player.hand)}`);
+    }
+
+    printDealersHands(dealer){
+        process.stdout.write(`${dealer.id}'s hands : `);
+        process.stdout.write(`[${dealer.hand[0].suit}  ${dealer.hand[0].number}] `);
+        process.stdout.write(`[    ] `);
+        console.log(` sum : ${this.countSum([dealer.hand[0]])}`);
     }
 
     replaceNumber(character) {
@@ -87,8 +95,8 @@ module.exports = class Blackjack{
         this.table.deck = this.shuffleDeck(this.table.deck);
         
         this.table.money = this.player.betMoney(this.table.money);
-        this.dealCards();
-        this.printHands(this.dealer);
+        this.dealCards(this.table.deck);
+        this.printDealersHands(this.dealer);
         this.printHands(this.player);
         
 
