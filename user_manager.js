@@ -27,10 +27,10 @@ module.exports = class UserManager{
         tempUser.id = this.inputData('Please input your ID> ');
         tempUser.password = this.inputDataHide('Please input your password> ');
         this.socket.write(`login$${tempUser.id}$${tempUser.password}`);
-        const result = JSON.parse(await this.getUserData());
+        let result = JSON.parse(await this.getUserData());
         if(result === false){
             console.log('ID 나 password 가 올바르지 않습니다.');
-            await this.login();
+            result = await this.login();
         }
         this.socket.removeAllListeners();
         this.user = result;
@@ -47,10 +47,10 @@ module.exports = class UserManager{
             await this.signUp();
         }
         this.socket.write(`signUp$${tempUser.id}$${tempUser.password}`);
-        const result = JSON.parse(await this.getUserData());
+        let result = JSON.parse(await this.getUserData());
         if(result === false){
             console.log('ID 가 이미 존재합니다.');
-            await this.signUp();
+            result = await this.signUp();
         }
         this.socket.removeAllListeners();
         this.user = result;
