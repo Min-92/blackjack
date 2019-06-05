@@ -67,18 +67,18 @@ module.exports = class Blackjack{
             number = this.replaceNumber(value.number);
             if (number.length === 2) {
                 if (sum[1] !== 0) {
-                    sum[0] += num[0];
-                    sum[1] += num[0];
+                    sum[0] += number[0];
+                    sum[1] += number[0];
                 } else {
-                    sum[1] = sum[0] + num[1];
-                    sum[0] += num[0];
+                    sum[1] = sum[0] + number[1];
+                    sum[0] += number[0];
                 }
             } else {
                 if (sum[1] !== 0) {
-                    sum[0] += num[0];
-                    sum[1] += num[0];
+                    sum[0] += number[0];
+                    sum[1] += number[0];
                 } else {
-                    sum[0] += num[0];
+                    sum[0] += number[0];
                 }
             }
         }
@@ -89,7 +89,13 @@ module.exports = class Blackjack{
         }
     }
 
-    startGame(){
+    decideNextStep(hand){
+        const sum = this.countSum(hand);
+        
+        
+    }
+
+    playGame(){
         this.initObjects();
         this.table.deck = this.shuffleDeck(this.table.deck);
         
@@ -98,6 +104,11 @@ module.exports = class Blackjack{
         this.printDealersHands(this.dealer);
         this.printHands(this.player);
         this.printMoney(this.table);
+        
+        const nextStep = this.decideNextStep(this.player.hand);
+
+        // this.choiceAction(this.player);
+
 
 
         
