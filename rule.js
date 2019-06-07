@@ -34,4 +34,35 @@ module.exports = class Rule{
         return sum;
     }
 
+    decideResult(playerHand, dealerHand){
+        let playerSum = this.countSum(playerHand);
+        let dealerSum = this.countSum(dealerHand);
+
+        if(playerSum[1] > 21 || playerSum[1] === 0){
+            playerSum = playerSum[0];
+        }else{
+            playerSum = playerSum[1];
+        }
+        
+        if(dealerSum[1] > 21 || dealerSum[1] === 0){
+            dealerSum = dealerSum[0];
+        }else{
+            dealerSum = dealerSum[1];
+        }
+
+        if(playerSum > 21){
+            return 'lose'
+        }
+        if(dealerSum > 21){
+            return 'win'
+        }
+        if(playerSum > dealerSum){
+            return 'win'
+        }
+        if(playerSum < dealerSum){
+            return 'lose'
+        }
+        return 'push';
+    }
+
 }
