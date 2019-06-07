@@ -18,27 +18,31 @@ module.exports = class Blackjack{
         for(let value of player.hand){
             process.stdout.write(`[${value.suit}  ${value.number}] `);
         }
-        console.log(` sum : ${this.rule.countSum(player.hand)}`);
+        const sum = this.rule.countSum(player.hand);
+        if(sum[1] === 0 || sum[1] > 21){
+            console.log(` sum : ${sum[0]}`);
+        }else{
+            console.log(` sum : ${sum}`);
+        }
     }
 
     printDealersHands(dealer){
         process.stdout.write(`${dealer.id}'s hands : `);
         process.stdout.write(`[${dealer.hand[0].suit}  ${dealer.hand[0].number}] `);
         process.stdout.write(`[    ] `);
-        console.log(` sum : ${this.rule.countSum([dealer.hand[0]])}`);
-    }
-
-    decideNextStep(hand){
-        const sum = this.rule.countSum(hand);
-        return sum<21 ? this.player.choiceAction() : this.player.endTurn();
+        const sum = this.rule.countSum([dealer.hand[0]]);
+        if(sum[1] === 0 || sum[1] > 21){
+            console.log(` sum : ${sum[0]}`);
+        }else{
+            console.log(` sum : ${sum}`);
+        }
     }
 
     waitTargetsTurn(targetPlayer){
         let endturn = true;
         while(endturn){
             endturn = targetPlayer.choiceAction();
-            this.printHands(targetPlayer);
-
+            if(endturn === true) this.printHands(targetPlayer);
         }
     }
 
@@ -50,7 +54,8 @@ module.exports = class Blackjack{
         this.printHands(this.player);
         
         this.waitTargetsTurn(this.player);
-
+        this.printHands(this.dealer);
+        this.waitTargetsTurn(this.dealer);
 
         
     }
