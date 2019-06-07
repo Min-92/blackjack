@@ -1,17 +1,13 @@
-const getNewDeck = require('./deck.js');
-const Dealer = require('./dealer.js');
-const Player = require('./player.js');
-const Table = require('./table.js');
-
 module.exports = class Blackjack{
-    constructor(userInfo,socket,readlineSync){
-        this.socket = socket;
-        this.readlineSync = readlineSync;
-        this.userInfo = userInfo;
+    constructor(argumentsObject){
+        this.socket  = argumentsObject.socket;
+        this.readlineSync = argumentsObject.readlineSync;
+        this.userInfo = argumentsObject.userInfo;
         
-        this.player;
-        this.dealer;
-        this.table;
+        this.player = argumentsObject.player;
+        this.dealer = argumentsObject.dealer;
+        this.deck = argumentsObject.deck;
+        this.bettingMoney = argumentsObject.bettingMoney;
     }
 
     shuffleDeck(deck){
@@ -20,20 +16,6 @@ module.exports = class Blackjack{
     }
     printMoney(player){
         console.log(`${player.id}'s money : ${player.money}`);
-    }
-
-    initObjects(){
-        this.dealer = new Dealer();
-        this.player = new Player(this.userInfo,this.readlineSync);
-        this.table = new Table(getNewDeck());
-    }
-
-    dealCards(deck){
-        console.log('dealing cards...');
-        [this.player,deck] = this.dealer.dealCard(this.player,deck);
-        [this.dealer,deck] = this.dealer.dealCard(this.dealer,deck);
-        [this.player,deck] = this.dealer.dealCard(this.player,deck);
-        [this.dealer,deck] = this.dealer.dealCard(this.dealer,deck);
     }
 
     printHands(player){
@@ -61,6 +43,7 @@ module.exports = class Blackjack{
     }
 
     countSum(hand) {
+        //todo : 메소드 이름 고민해보기
         let sum = [0, 0];
         let number;
         for (let value of hand) {
@@ -96,29 +79,17 @@ module.exports = class Blackjack{
     }
 
     playGame(){
-        this.initObjects();
-        this.table.deck = this.shuffleDeck(this.table.deck);
-        
-        this.table.money = this.player.betMoney(this.table.money);
-        this.dealCards(this.table.deck);
+        this.deck.shuffleCardList();
+        this.bettingMoney = this.player.betMoney();
+        this.dealer.dealCards();
         this.printDealersHands(this.dealer);
         this.printHands(this.player);
-        this.printMoney(this.table);
         
         const nextStep = this.decideNextStep(this.player.hand);
 
-        // this.choiceAction(this.player);
 
 
 
         
     }
-
-
-
-
-
-
-
-
 }
