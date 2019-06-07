@@ -31,11 +31,7 @@ module.exports = class Rule{
                 }
             }
         }
-        if (sum[1] === 0 || sum[1] > 22) {
-            return [sum[0]];
-        } else {
-            return sum;
-        }
+        return sum;
     }
 
 }
