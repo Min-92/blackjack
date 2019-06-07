@@ -74,8 +74,7 @@ module.exports = class Blackjack{
 
     decideNextStep(hand){
         const sum = this.countSum(hand);
-        
-        
+        return sum<21 ? this.player.choiceAction() : this.player.endTurn();
     }
 
     playGame(){
@@ -86,8 +85,7 @@ module.exports = class Blackjack{
         this.printHands(this.player);
         
         const nextStep = this.decideNextStep(this.player.hand);
-
-
+        nextStep;
 
 
         
