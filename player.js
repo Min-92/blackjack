@@ -1,11 +1,11 @@
 module.exports = class Player{
-    constructor(userInfo,readlineSync,deck){
+    constructor(userInfo,readlineSync,deck,rule){
         this.readlineSync = readlineSync;
-
         this.id = userInfo.id;
         this.money = userInfo.money;
         this.hand = [];
         this.deck = deck;
+        this.rule = rule;
     }
 
     betMoney(){
@@ -23,4 +23,19 @@ module.exports = class Player{
         this.hand.push(this.deck.dealCard());
     }
 
+    choiceAction() {
+        if (this.rule.countSum(this.hand) >= 21) {
+            return false;
+        }
+        const action = this.readlineSync.question('Hit? or Stay?\n< 1. Hit >   < 2. Stay > ');
+        if (action === '1') {
+            this.takeCard();
+            return true;
+        }
+        if (action === '2') {
+            return false;
+        }
+        console.log('다시 입력해주세요.');
+        return true;
+    }
 }
