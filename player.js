@@ -8,8 +8,8 @@ module.exports = class Player{
         this.deck = deck;
     }
 
-    betMoney(bettingMoney){
-        bettingMoney = Number(this.readlineSync.question(`베팅할 금액을 입력하세요. 소지금 : ${this.money}> `));
+    betMoney(){
+        const bettingMoney = Number(this.readlineSync.question(`베팅할 금액을 입력하세요. 소지금 : ${this.money}> `));
         if(bettingMoney > this.money){
             console.log(`베팅금액은 소지금보다 적어야합니다.`);
             this.betMoney(bettingMoney);
