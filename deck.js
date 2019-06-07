@@ -39,6 +39,6 @@ module.exports = class Deck {
     }
 
     dealCard(){
-        return drawCard();
+        return this.drawCard();
     }
 }
