@@ -20,19 +20,23 @@ module.exports = class Player{
     }
 
     takeCard(){
+        console.log(`${this.id} is taking card...`);
         this.hand.push(this.deck.dealCard());
     }
 
     choiceAction() {
-        if (this.rule.countSum(this.hand) >= 21) {
+        const sum = this.rule.countSum(this.hand); 
+        if (sum[0] >= 21 || sum[1] === 21) {
             return false;
         }
         const action = this.readlineSync.question('Hit? or Stay?\n< 1. Hit >   < 2. Stay > ');
         if (action === '1') {
+            console.log('Hit!');
             this.takeCard();
             return true;
         }
         if (action === '2') {
+            console.log('Stay!');
             return false;
         }
         console.log('다시 입력해주세요.');
