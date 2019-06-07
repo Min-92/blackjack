@@ -33,6 +33,15 @@ module.exports = class Blackjack{
         return sum<21 ? this.player.choiceAction() : this.player.endTurn();
     }
 
+    waitTargetsTurn(targetPlayer){
+        let endturn = true;
+        while(endturn){
+            endturn = targetPlayer.choiceAction();
+            this.printHands(targetPlayer);
+
+        }
+    }
+
     playGame(){
         this.deck.shuffleCardList();
         this.bettingMoney = this.player.betMoney();
@@ -40,8 +49,7 @@ module.exports = class Blackjack{
         this.printDealersHands(this.dealer);
         this.printHands(this.player);
         
-        const nextStep = this.decideNextStep(this.player.hand);
-        nextStep;
+        this.waitTargetsTurn(this.player);
 
 
         
