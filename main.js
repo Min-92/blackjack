@@ -5,6 +5,7 @@ const Blackjack = require('./blackjack.js');
 const Dealer = require('./dealer.js');
 const Player = require('./player.js');
 const Deck = require('./deck.js');
+const Rule = require('./rule.js');
 const BettingMoney = require('./betting_money.js');
 
 const socket = net.connect(
@@ -49,15 +50,17 @@ const initObjects = (userInfo) => {
     const bettingMoney = new BettingMoney();
     const deck = new Deck();
     deck.getNewDeck();
-    const player = new Player(userInfo, readlineSync, deck);
-    const dealer = new Dealer(deck, player);
+    const rule = new Rule()
+    const player = new Player(userInfo, readlineSync, deck, rule);
+    const dealer = new Dealer(deck, player, rule);
     const argumentsObject = {
         player,
         dealer,
         bettingMoney,
         deck,
         socket,
-        readlineSync
+        readlineSync,
+        rule
     }
     return new Blackjack(argumentsObject);
 }
