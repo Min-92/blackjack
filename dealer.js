@@ -1,22 +1,21 @@
-module.exports = class Dealer{
-    constructor(){
+module.exports = class Dealer {
+    constructor(deck,player) {
         this.id = 'Dealer';
         this.hand = [];
+        this.deck = deck;
+        this.player = player;
     }
-    shuffleDeck(deck){
-        const newDeck = [...deck];
-        for(let i = newDeck.length -1; i > 0 ; i--){
-            const randomIndex = Math.floor(Math.random()*(i+1));
-            const randomCard = newDeck[i];
-            newDeck[i] = newDeck[randomIndex];
-            newDeck[randomIndex] = randomCard;
+
+    dealCards() {
+        let i = 0;
+        while(i++ < 2){
+            this.takeCard();
+            this.player.takeCard();
         }
-        return newDeck;
     }
-    
-    dealCard(targetPlayer,deck){
-        targetPlayer.hand.push(deck.pop());
-        return [targetPlayer,deck];
+
+    takeCard(){
+        this.hand.push(this.deck.dealCard());
     }
 
 
