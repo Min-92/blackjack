@@ -46,9 +46,28 @@ module.exports = class Blackjack{
         }
     }
 
+    choiceRestart(){
+        const result = this.readlineSync.question("Play again?\n< 1. Yes > < 2. No > ")
+        return result === '1' ? true : false
+    }
+
+    finishGame(result){
+        if(result === 'win'){
+            this.player.money += this.bettingMoney.rewardMoney();
+            this.socket.write(`updateMoney$${this.player.id}$${this.player.money}`);
+            console.log(`Get reward!`);
+            this.printMoney(this.player);
+        }else{
+            this.socket.write(`updateMoney$${this.player.id}$${this.player.money}`);
+            this.bettingMoney.takeMoney();
+            this.printMoney(this.player);
+        }
+        return this.choiceRestart();
+    }
+
     playGame(){
         this.deck.shuffleCardList();
-        this.bettingMoney = this.player.betMoney();
+        this.bettingMoney.amount = this.player.betMoney();
         this.dealer.dealCards();
         this.printDealersHands(this.dealer);
         this.printHands(this.player);
@@ -57,6 +76,9 @@ module.exports = class Blackjack{
         this.printHands(this.dealer);
         this.waitTargetsTurn(this.dealer);
 
-        
+        const result = this.rule.decideResult(this.player.hand, this.dealer.hand);
+        console.log(`${result}!`);
+        this.dealer.returnCards();
+        return this.finishGame(result);
     }
 }
