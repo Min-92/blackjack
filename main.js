@@ -21,7 +21,7 @@ const choiceAction = () => {
     let input = readlineSync.question(`input '1' or '2'\n< 1. log in >   < 2. sign up > `);
     if (input !== '1' && input !== '2') {
         console.log(`다시입력하세요.`);
-        choiceAction()
+        return choiceAction()
     }else{
         return doAction(input);
     }
@@ -54,13 +54,7 @@ const initObjects = (userInfo) => {
     const player = new Player(userInfo, readlineSync, deck, rule);
     const dealer = new Dealer(deck, player, rule);
     const argumentsObject = {
-        player,
-        dealer,
-        bettingMoney,
-        deck,
-        socket,
-        readlineSync,
-        rule
+        player, dealer, bettingMoney, deck, socket, readlineSync, rule
     }
     return new Blackjack(argumentsObject);
 }
@@ -69,5 +63,8 @@ const main = async() => {
     const userInfo = await getUserInfo();
     const blackjack = initObjects(userInfo);
     console.log('Start game!');
-    blackjack.playGame();
+    let restart = true;
+    while(restart){
+        restart = blackjack.playGame();
+    }
 }
