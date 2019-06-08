@@ -32,6 +32,10 @@ class ServerMain {
     signUp(command) {
         return this.serverUserManager.signUp(command);
     }
+
+    updateMoney(command){
+        this.serverUserManager.updateMoney(command);
+    }
 }
 
 
@@ -49,11 +53,12 @@ const server = net.createServer((socket) => {
         }
         serverMain.serverUserManager.updateUserData();
         console.log('received data : ' + data);
+        console.log(data);
         const command = serverMain.parseData(data);
         const action = command.action;
         const sendingData = serverMain[`${action}`](command);
-
-        socket.write(`${JSON.stringify(sendingData)}`);
+        
+        if(sendingData !== undefined) socket.write(`${JSON.stringify(sendingData)}`);
     });
 
     socket.on('end', function () {
