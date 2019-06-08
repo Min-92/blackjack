@@ -48,7 +48,11 @@ module.exports = class Blackjack{
 
     choiceRestart(){
         const result = this.readlineSync.question("Play again?\n< 1. Yes > < 2. No > ")
-        return result === '1' ? true : false
+        if(result !== '1' && result !== '2') {
+            console.log('다시 입력해주세요.');
+            return this.choiceRestart();
+        }
+            return result === '1' ? true : false
     }
 
     finishGame(result){
