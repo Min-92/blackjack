@@ -5,6 +5,28 @@ module.exports = class UserManager{
         this.user = {};
     }
 
+    choiceAction(){
+        let input = this.readlineSync.question(`input '1' or '2'\n< 1. log in >   < 2. sign up > `);
+        if (input !== '1' && input !== '2') {
+            console.log(`다시입력하세요.`);
+            return this.choiceAction()
+        }else{
+            return this.doAction(input);
+        }
+    };
+    
+    doAction(action){
+        if (action === '1') {
+            return this.login();
+        } else if (action === '2') {
+            return this.signUp();
+        };
+    }
+    
+    getUserInfo(){
+        return this.choiceAction();
+    }
+
     inputData(question){
         return this.readlineSync.question(`${question}`);
     }

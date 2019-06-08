@@ -17,34 +17,6 @@ const socket = net.connect(
 );
 
 const userManager = new UserManager(socket,readlineSync);
-const choiceAction = () => {
-    let input = readlineSync.question(`input '1' or '2'\n< 1. log in >   < 2. sign up > `);
-    if (input !== '1' && input !== '2') {
-        console.log(`다시입력하세요.`);
-        return choiceAction()
-    }else{
-        return doAction(input);
-    }
-};
-
-const logIn = () => {
-    return userManager.login();
-}
-const signUp = () => {
-    return userManager.signUp();
-}
-
-const doAction = (action) => {
-    if (action === '1') {
-        return logIn();
-    } else if (action === '2') {
-        return signUp();
-    };
-}
-
-const getUserInfo = () => {
-    return choiceAction();
-}
 
 const initObjects = (userInfo) => {
     const bettingMoney = new BettingMoney();
@@ -60,7 +32,7 @@ const initObjects = (userInfo) => {
 }
 
 const main = async() => {
-    const userInfo = await getUserInfo();
+    const userInfo = await userManager.getUserInfo();
     const blackjack = initObjects(userInfo);
     console.log('Start game!');
     let restart = true;
