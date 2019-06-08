@@ -24,6 +24,10 @@ module.exports = class Player{
         this.hand.push(this.deck.dealCard());
     }
 
+    returnCard(){
+        this.deck.takeCard(this.hand.pop());
+    }
+
     choiceAction() {
         const sum = this.rule.countSum(this.hand); 
         if (sum[0] >= 21 || sum[1] === 21) {
