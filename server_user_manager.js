@@ -24,7 +24,6 @@ module.exports = class ServerUserManager {
     }
 
     login(command) {
-        // this.updateUserData();
         const result = this.isMember(command);
         if (result) {
             console.log(`${result.id} is loged in.`);
@@ -50,4 +49,11 @@ module.exports = class ServerUserManager {
         console.log(`member ID '${tempUser.id}' is signed up.`);
         return tempUser;
     }
+
+    updateMoney(command){
+        this.userData[command.id].money = command.money;
+        this.writeUserData();
+    }
+
+
 }
