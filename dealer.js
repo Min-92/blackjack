@@ -29,5 +29,18 @@ module.exports = class Dealer {
         return true;
     }
 
+    returnCard(){
+        this.deck.takeCard(this.hand.pop());
+    }
+    
+    returnCards(){
+        while(this.hand.length){
+            this.returnCard();
+        }
+        while(this.player.hand.length){
+            this.player.returnCard();
+        }
+    }
+
 
 }
