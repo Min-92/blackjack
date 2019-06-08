@@ -24,6 +24,7 @@ module.exports = class Deck {
     }
 
     shuffleCardList(){
+        console.log('shuffling cards...');
         const newDeck = [...this.cardList];
         for(let i = newDeck.length -1; i > 0 ; i--){
             const randomIndex = Math.floor(Math.random()*(i+1));
@@ -40,5 +41,9 @@ module.exports = class Deck {
 
     dealCard(){
         return this.drawCard();
+    }
+
+    takeCard(card){
+        this.cardList.push(card);
     }
 }
