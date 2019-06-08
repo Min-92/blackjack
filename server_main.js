@@ -9,33 +9,37 @@ class ServerMain {
         if (!fs.existsSync(`./data`)) {
             fs.mkdirSync(`./data`);
         }
-        fs.writeFileSync(`./data/userData.txt`, '[]', 'utf8');
+        fs.writeFileSync(`./data/userData.txt`, '{}', 'utf8');
         console.log('userData.txt has been created.');
     };
 
     parseData(data) {
         const dataArray = data.split('$');
         const command = {};
+        command.action  = dataArray[0];
         switch (dataArray[0]) {
-            case 'login':
-                command.action = 'login';
+            case 'login': case 'signUp':
                 command.id = dataArray[1];
                 command.pw = dataArray[2];
                 return command;
-            case 'signUp':
-                command.action = 'signUp';
+            case 'updateMoney':
                 command.id = dataArray[1];
-                command.pw = dataArray[2];
+                command.money = dataArray[2];
                 return command;
+            default:
+                return;
         }
-    };
+    }
 
     isMember(command) {
-        for (let value of this.userData) {
-            if (value.id === command.id && value.pw == command.pw) {
-                return value;
-            }
+        if(command.id in this.userData){
+            if(this.userData[command.id].pw === command.pw) return this.userData[command.id]
         }
+        // for (let value of this.userData) {
+        //     if (value.id === command.id && value.pw === command.pw) {
+        //         return value;
+        //     }
+        // }
         return false;
     }
 
@@ -50,7 +54,7 @@ class ServerMain {
     login(command) {
         this.updateUserData();
         const result = this.isMember(command);
-        if(!result){
+        if (result) {
             console.log(`${result.id} is loged in.`);
         }
         return result;
@@ -58,7 +62,7 @@ class ServerMain {
 
     signUp(command) {
         this.updateUserData();
-        if (this.isMemberer() !== false) {
+        if (this.isMember(command) !== false) {
             return false;
         };
         const tempUser = {
@@ -66,10 +70,20 @@ class ServerMain {
             pw: command.pw,
             money: 1000
         }
-        this.userData.push(tempUser);
+        this.userData[tempUser.id] = tempUser;
+        // this.userData.push(tempUser);
         this.writeUserData();
         console.log(`member ID '${tempUser.id}' is signed up.`);
         return tempUser;
+    }
+
+    updateMoney(command){
+        for (let key of this.userData) {
+            if (this.userData[key].id === command.id) {
+                this.userData[key].money = command.money;
+            }
+        }
+        this.writeUserData();
     }
 }
 
