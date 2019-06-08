@@ -1,17 +1,11 @@
 const net = require('net');
 const fs = require('fs');
+const ServerUserManager = require('./server_user_manager');
 
 class ServerMain {
-    constructor() {
-        this.userData;
+    constructor(serverUserManager) {
+        this.serverUserManager = serverUserManager;
     }
-    createUserDataFile() {
-        if (!fs.existsSync(`./data`)) {
-            fs.mkdirSync(`./data`);
-        }
-        fs.writeFileSync(`./data/userData.txt`, '{}', 'utf8');
-        console.log('userData.txt has been created.');
-    };
 
     parseData(data) {
         const dataArray = data.split('$');
@@ -31,59 +25,12 @@ class ServerMain {
         }
     }
 
-    isMember(command) {
-        if(command.id in this.userData){
-            if(this.userData[command.id].pw === command.pw) return this.userData[command.id]
-        }
-        // for (let value of this.userData) {
-        //     if (value.id === command.id && value.pw === command.pw) {
-        //         return value;
-        //     }
-        // }
-        return false;
-    }
-
-    updateUserData() {
-        this.userData = JSON.parse(fs.readFileSync('./data/userData.txt').toString());
-    }
-
-    writeUserData() {
-        fs.writeFileSync('./data/userData.txt', JSON.stringify(this.userData));
-    }
-
     login(command) {
-        this.updateUserData();
-        const result = this.isMember(command);
-        if (result) {
-            console.log(`${result.id} is loged in.`);
-        }
-        return result;
+        return this.serverUserManager.login(command);
     }
 
     signUp(command) {
-        this.updateUserData();
-        if (this.isMember(command) !== false) {
-            return false;
-        };
-        const tempUser = {
-            id: command.id,
-            pw: command.pw,
-            money: 1000
-        }
-        this.userData[tempUser.id] = tempUser;
-        // this.userData.push(tempUser);
-        this.writeUserData();
-        console.log(`member ID '${tempUser.id}' is signed up.`);
-        return tempUser;
-    }
-
-    updateMoney(command){
-        for (let key of this.userData) {
-            if (this.userData[key].id === command.id) {
-                this.userData[key].money = command.money;
-            }
-        }
-        this.writeUserData();
+        return this.serverUserManager.signUp(command);
     }
 }
 
@@ -91,18 +38,20 @@ class ServerMain {
 
 const server = net.createServer((socket) => {
     console.log('connected');
-    const main = new ServerMain();
+    const serverUserManager = new ServerUserManager(fs);
+    const serverMain = new ServerMain(serverUserManager);
 
     socket.setEncoding('utf8');
 
     socket.on('data', (data) => {
         if (!fs.existsSync(`./data/userData.txt`)) {
-            main.createUserDataFile();
+            serverUserManager.createUserDataFile();
         }
+        serverMain.serverUserManager.updateUserData();
         console.log('received data : ' + data);
-        const command = main.parseData(data);
+        const command = serverMain.parseData(data);
         const action = command.action;
-        const sendingData = main[`${action}`](command);
+        const sendingData = serverMain[`${action}`](command);
 
         socket.write(`${JSON.stringify(sendingData)}`);
     });
