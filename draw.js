@@ -4,8 +4,18 @@ module.exports = class Draw {
     constructor() {
         this.screen;
         this.box;
-        this.prompt;
+        this.idPrompt;
+        this.pwPrompt;
+        this.message;
         this.bar;
+    }
+    removeBar() {
+        this.screen.remove(this.bar);
+    }
+
+    removePrompt() {
+        this.screen.remove(this.idPrompt);
+        this.screen.remove(this.pwPrompt);
     }
 
     setMainMenu() {
@@ -29,7 +39,8 @@ module.exports = class Draw {
 ■   ■   ■     ■  ■       ■  ■  
   ■    ■       ■  ■ ■ ■  ■   ■ 
 
-                                      by Wangmin{/red-fg}{/center}`,
+{/red-fg}{/center}
+{right}by Wangmin{/right}`,
                 tags: true,
                 border: {
                     type: 'line'
@@ -66,11 +77,10 @@ module.exports = class Draw {
                     }
                 },
                 commands: {
-                    ' Log in ':
-                        () => {
-                            resolve('login');
+                    ' Log in ': () => {
+                        resolve('login');
 
-                        },
+                    },
                     ' Sign up ': () => {
                         resolve('signUp');
                     }
@@ -82,6 +92,59 @@ module.exports = class Draw {
 
         });
 
+    }
+
+    setLogin() {
+        return new Promise(resolve => {
+            this.idPrompt = blessed.prompt({
+                parent: this.screen,
+                border: 'line',
+                top: '70%',
+                left: '10%',
+                width: '80%',
+                height: 'shrink',
+                label: ' {blue-fg}Log in{/blue-fg} ',
+                tags: true,
+                keys: true,
+            });
+
+            this.pwPrompt = blessed.prompt({
+                parent: this.screen,
+                border: 'line',
+                top: '70%',
+                left: '10%',
+                width: '80%',
+                height: 'shrink',
+                label: ' {blue-fg}Log in{/blue-fg} ',
+                tags: true,
+                keys: true,
+            });
+
+            this.idPrompt.input('Please input your ID', '', (err, id) => {
+                this.pwPrompt.input('Please input your Password', '', (err, password) => {
+                    resolve({ id, password });
+                });
+            });
+
+            this.renderScreen();
+        });
+    }
+
+    setMessage(message) {
+        this.message = blessed.message({
+            parent: this.screen,
+            border: 'line',
+            height: 'shrink',
+            width: 'half',
+            top: 'center',
+            left: 'center',
+            label: ` {blue-fg}Message{/blue-fg} `,
+            tags: true,
+            keys: true,
+            hidden: true,
+            vi: true
+        });
+        this.message.display(`${message}`,3,(err) =>{});
     }
 
     renderScreen() {
