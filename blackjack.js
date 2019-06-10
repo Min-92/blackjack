@@ -1,7 +1,6 @@
 module.exports = class Blackjack {
     constructor(argumentsObject) {
         this.socket = argumentsObject.socket;
-        this.readlineSync = argumentsObject.readlineSync;
         this.rule = argumentsObject.rule;
         this.player = argumentsObject.player;
         this.dealer = argumentsObject.dealer;

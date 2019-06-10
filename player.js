@@ -1,6 +1,5 @@
 module.exports = class Player {
-    constructor(userInfo, readlineSync, deck, rule, draw) {
-        this.readlineSync = readlineSync;
+    constructor(userInfo, deck, rule, draw) {
         this.id = userInfo.id;
         this.money = userInfo.money;
         this.hand = [];
