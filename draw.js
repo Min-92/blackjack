@@ -42,6 +42,98 @@ module.exports = class Draw {
 
     }
 
+    setListBar(setCommands) {
+        return new Promise(resolve => {
+            const commands = setCommands(resolve);
+            this.bar = blessed.listbar({
+                parent: this.screen,
+                top: '80%',
+                left: 'center',
+                width: '90%',
+                height: 'shrink',
+                keys: true,
+                autoCommandKeys: true,
+                border: 'line',
+                vi: true,
+                style: {
+                    bg: 'black',
+                    item: {
+                        bg: 'black',
+                        hover: {
+                            bg: 'blue'
+                        },
+                    },
+                    selected: {
+                        bg: 'blue'
+                    }
+                },
+                commands
+            });
+            this.bar.focus();
+            this.renderScreen();
+        });
+    }
+
+    setChip(amount, space, color) {
+        return blessed.box({
+            parent: this.box,
+            bottom: 0,
+            left: `5%+${space}`,
+            width: 'shrink',
+            height: 'shrink',
+            content: `{bold}${amount}{/bold}`,
+            tags: true,
+            border: {
+                type: 'line',
+                bg: '#055F40'
+            },
+            style: {
+                fg: 'white',
+                bg: `${color}`,
+            }
+        })
+    }
+
+    betting(amount, money) {
+        if (amount > money) {
+            this.message(`Can't bet anymore!`,1);
+            return money;
+        }
+        money -= amount;
+        this.bettingMoney += amount;
+        const color = this.chipColor[amount];
+        const space = this.chip.length * 5;
+        this.chip.push(this.setChip(amount, space, color));
+        return money;
+    }
+
+    async bettingBar(money) {
+        this.bettingMoney = 0;
+        const setCommands = (callback) => {
+            return {
+                ' 1 ': () => {
+                    money = this.betting(1, money);
+                },
+                ' 5 ': () => {
+                    money = this.betting(5, money);
+                },
+                ' 25 ': () => {
+                    money = this.betting(25, money);
+                },
+                ' 100 ': () => {
+                    money = this.betting(100, money);
+                },
+                ' 500 ': () => {
+                    money = this.betting(500, money);
+                },
+                ' Bet! ': () => {
+                    callback(this.bettingMoney);
+                }
+            };
+        };
+        return await this.setListBar(setCommands);
+    }
+
     money(money) {
         if (this.moneyObject) {
             this.moneyObject.destroy();
