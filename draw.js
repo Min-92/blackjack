@@ -42,6 +42,69 @@ module.exports = class Draw {
 
     }
 
+    blackjackTable(money) {
+        this.box = blessed.box({
+            parent: this.screen,
+            top: 0,
+            left: 'center',
+            width: '90%',
+            height: '80%',
+            content: ``,
+            tags: true,
+            border: {
+                type: 'line'
+            },
+            style: {
+                fg: 'white',
+                bg: '#055F40',
+                border: {
+                    fg: '#f0f0f0'
+                },
+            }
+        });
+
+        this.center = blessed.box({
+            parent: this.box,
+            top: 'center',
+            left: 'center',
+            width: 'shrink',
+            height: 'shrink',
+            content: '{center}{bold}           BLACK JACK           {/bold}{/center}',
+            tags: true,
+            border: {
+                type: 'line',
+                bg: '#055F40',
+                fg: 'yellow',
+            },
+            style: {
+                fg: 'yellow',
+                bg: '#055F40',
+            }
+        });
+
+        this.deck = blessed.box({
+            parent: this.box,
+            top: 0,
+            left: '85%',
+            width: 'shrink+9',
+            height: 'shrink',
+            content: `※※※※※※\n※※※※※※\n※※※※※※\n※※※※※※\n※※※※※※`,
+            tags: true,
+            border: {
+                type: 'line'
+            },
+            style: {
+                fg: 'white',
+                bg: '#861515',
+                border: {
+                    fg: '#f0f0f0'
+                },
+            }
+        });
+        this.money(money);
+        this.renderScreen();
+        this.message(`\n     {bold}Start game!{/bold}     \n`, 1);
+    }
 
     mainMenu() {
         return new Promise(resolve => {
