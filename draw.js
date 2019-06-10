@@ -73,6 +73,22 @@ module.exports = class Draw {
             this.renderScreen();
         });
     }
+    
+    async topUpMoney() {
+        this.message('You are broke...\nI will recharge your money.\nBut you need to buy coffee to Wangmin.\nDo you agree?', -1);
+        const setCommands = (callback) => {
+            return {
+                ' Yes ': () => {
+                    return callback(1000);
+                },
+                ' No (Game over) ': () => {
+                    return callback(this.gameOver()
+                    );
+                }
+            };
+        };
+        return await this.setListBar(setCommands);
+    }
 
     async choiceRestart() {
         const setCommands = (callback) => {
