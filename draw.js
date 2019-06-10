@@ -74,6 +74,38 @@ module.exports = class Draw {
         });
     }
     
+    printDealerHands(hand) {
+        if (this.dealerHand.length) {
+            this.dealerHand = this.claerHand(this.dealerHand);
+        }
+        let space;
+        let color;
+        for (let i = 0; i < hand.length; i++) {
+            space = this.dealerHand.length * 5;
+            color = this.suitColor[hand[i].suit];
+            this.dealerHand.push(blessed.box({
+                parent: this.box,
+                top: '0',
+                left: `30%+${space}`,
+                width: 'shrink+9',
+                height: 'shrink',
+                content: `${hand[i].number}     \n${hand[i].suit}     \n      \n     ${hand[i].suit}\n     ${hand[i].number}`,
+                tags: true,
+                border: {
+                    type: 'line'
+                },
+                style: {
+                    fg: `${color}`,
+                    bg: 'white',
+                    border: {
+                        fg: '#f0f0f0'
+                    },
+                }
+            }));
+        }
+        this.renderScreen();
+    }
+
     printDealerHandsHide(hand) {
         if (this.dealerHand.length) {
             this.dealerHand = this.claerHand(this.dealerHand);
