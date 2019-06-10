@@ -74,6 +74,38 @@ module.exports = class Draw {
         });
     }
 
+    printHands(hand) {
+        if (this.playerHand.length) {
+            this.playerHand = this.claerHand(this.playerHand);
+        }
+        let space;
+        let color;
+        for (let i = 0; i < hand.length; i++) {
+            space = this.playerHand.length * 5;
+            color = this.suitColor[hand[i].suit];
+            this.playerHand.push(blessed.box({
+                parent: this.box,
+                top: '60%',
+                left: `10%+${space}`,
+                width: 'shrink+9',
+                height: 'shrink',
+                content: `${hand[i].number}     \n${hand[i].suit}     \n      \n     ${hand[i].suit}\n     ${hand[i].number}`,
+                tags: true,
+                border: {
+                    type: 'line'
+                },
+                style: {
+                    fg: `${color}`,
+                    bg: 'white',
+                    border: {
+                        fg: '#f0f0f0'
+                    },
+                }
+            }));
+        }
+        this.renderScreen();
+    }
+
     setChip(amount, space, color) {
         return blessed.box({
             parent: this.box,
