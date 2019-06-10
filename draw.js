@@ -74,6 +74,20 @@ module.exports = class Draw {
         });
     }
 
+    async choiceRestart() {
+        const setCommands = (callback) => {
+            return {
+                ' Restart ': () => {
+                    return callback(true);
+                },
+                ' Exit ': () => {
+                    return callback(false);
+                }
+            };
+        };
+        return await this.setListBar(setCommands);
+    }
+
     async choiceAction() {
         const setCommands = (callback) => {
             return {
