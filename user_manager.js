@@ -1,7 +1,6 @@
 module.exports = class UserManager {
-    constructor(socket, readlineSync, draw) {
+    constructor(socket, draw) {
         this.socket = socket;
-        this.readlineSync = readlineSync;
         this.user = {};
         this.draw = draw;
     }
