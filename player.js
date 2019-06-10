@@ -1,49 +1,57 @@
-module.exports = class Player{
-    constructor(userInfo,readlineSync,deck,rule){
+module.exports = class Player {
+    constructor(userInfo, readlineSync, deck, rule, draw) {
         this.readlineSync = readlineSync;
         this.id = userInfo.id;
         this.money = userInfo.money;
         this.hand = [];
         this.deck = deck;
         this.rule = rule;
+        this.draw = draw;
     }
 
-    betMoney(){
-        const bettingMoney = Number(this.readlineSync.question(`베팅할 금액을 입력하세요. 소지금 : ${this.money}> `));
-        if(bettingMoney > this.money){
-            console.log(`베팅금액은 소지금보다 적어야합니다.`);
-            this.betMoney(bettingMoney);
-        }else{
-            this.money -= bettingMoney;
-            return bettingMoney;
+    async betMoney() {
+        let bettingMoney = await this.draw.bettingBar(this.money);
+        if (bettingMoney > this.money) {
+            bettingMoney = this.money;
         }
+        this.money -= bettingMoney;
+        this.draw.money(this.money);
+        this.draw.removeBar(); 
+        return bettingMoney;
     }
 
-    takeCard(){
-        console.log(`${this.id} is taking card...`);
+    takeCard() {
         this.hand.push(this.deck.dealCard());
     }
 
-    returnCard(){
+    returnCard() {
         this.deck.takeCard(this.hand.pop());
     }
 
-    choiceAction() {
-        const sum = this.rule.countSum(this.hand); 
+    printHands() {
+        this.draw.printHands(this.hand);
+        const sum = this.rule.countSum(this.hand);
+        if (sum[1] === 0 || sum[1] > 21) {
+            this.draw.setPlayerSum(sum[0]);
+        } else {
+            this.draw.setPlayerSum(sum);
+        }
+    }
+
+    async choiceAction() {
+        let sum = this.rule.countSum(this.hand);
         if (sum[0] >= 21 || sum[1] === 21) {
-            return false;
+            return;
         }
-        const action = this.readlineSync.question('Hit? or Stay?\n< 1. Hit >   < 2. Stay > ');
-        if (action === '1') {
-            console.log('Hit!');
+        const action = await this.draw.choiceAction();
+        if (action === 'hit') {
+            this.draw.setMessage(`\n     {bold}Hit!{/bold}     \n`, 1);
             this.takeCard();
-            return true;
+            this.printHands();
+            return this.choiceAction();
+        } else {
+            this.draw.setMessage(`\n     {bold}Stay{/bold}     \n`, 1);
+            return;
         }
-        if (action === '2') {
-            console.log('Stay!');
-            return false;
-        }
-        console.log('다시 입력해주세요.');
-        return true;
     }
 }
