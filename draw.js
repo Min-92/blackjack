@@ -74,6 +74,56 @@ module.exports = class Draw {
         });
     }
     
+    setDealerSum(sum) {
+        if (this.dealerSum) {
+            this.dealerSum.destroy();
+        }
+        this.dealerSum = blessed.box({
+            parent: this.box,
+            top: '25%',
+            left: '10%',
+            width: 'shrink',
+            height: 'shrink',
+            content: `{center}{bold}sum : ${sum}{/bold}{/center}`,
+            tags: true,
+            border: {
+                type: 'line',
+                bg: '#055F40',
+                fg: 'yellow',
+            },
+            style: {
+                fg: 'yellow',
+                bg: '#055F40',
+            }
+        });
+        this.renderScreen();
+    }
+    
+    setPlayerSum(sum) {
+        if (this.playerSum) {
+            this.playerSum.destroy();
+        }
+        this.playerSum = blessed.box({
+            parent: this.box,
+            top: '50%',
+            left: '10%',
+            width: 'shrink',
+            height: 'shrink',
+            content: `{center}{bold}sum : ${sum}{/bold}{/center}`,
+            tags: true,
+            border: {
+                type: 'line',
+                bg: '#055F40',
+                fg: 'yellow',
+            },
+            style: {
+                fg: 'yellow',
+                bg: '#055F40',
+            }
+        });
+        this.renderScreen();
+    }
+
     printDealerHands(hand) {
         if (this.dealerHand.length) {
             this.dealerHand = this.claerHand(this.dealerHand);
