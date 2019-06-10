@@ -42,6 +42,32 @@ module.exports = class Draw {
 
     }
 
+    money(money) {
+        if (this.moneyObject) {
+            this.moneyObject.destroy();
+        }
+        this.moneyObject = blessed.box({
+            parent: this.box,
+            top: 0,
+            left: '0',
+            width: 'shrink',
+            height: 'shrink',
+            content: `{center}{bold}Your Money : ${money}{/bold}{/center}`,
+            tags: true,
+            border: {
+                type: 'line'
+            },
+            style: {
+                fg: 'white',
+                bg: 'black',
+                border: {
+                    fg: '#f0f0f0'
+                },
+            }
+        });
+        this.renderScreen();
+    }
+
     blackjackTable(money) {
         this.box = blessed.box({
             parent: this.screen,
