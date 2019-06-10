@@ -73,6 +73,64 @@ module.exports = class Draw {
             this.renderScreen();
         });
     }
+    
+    printDealerHandsHide(hand) {
+        if (this.dealerHand.length) {
+            this.dealerHand = this.claerHand(this.dealerHand);
+        }
+        let space;
+        let color;
+        space = this.dealerHand.length * 5;
+        this.dealerHand.push(blessed.box({
+            parent: this.box,
+            top: '0',
+            left: `30%+${space}`,
+            width: 'shrink+9',
+            height: 'shrink',
+            content: `※※※※※※\n※※※※※※\n※※※※※※\n※※※※※※\n※※※※※※`,
+            tags: true,
+            border: {
+                type: 'line'
+            },
+            style: {
+                fg: 'white',
+                bg: '#861515',
+                border: {
+                    fg: '#f0f0f0'
+                },
+            }
+        }));
+
+        space = this.dealerHand.length * 5;
+        color = this.suitColor[hand.suit];
+        this.dealerHand.push(blessed.box({
+            parent: this.box,
+            top: '0',
+            left: `30%+${space}`,
+            width: 'shrink+9',
+            height: 'shrink',
+            content: `${hand.number}     \n${hand.suit}     \n      \n     ${hand.suit}\n     ${hand.number}`,
+            tags: true,
+            border: {
+                type: 'line'
+            },
+            style: {
+                fg: `${color}`,
+                bg: 'white',
+                border: {
+                    fg: '#f0f0f0'
+                },
+            }
+        }));
+        this.renderScreen();
+    }
+
+    claerHand(hand) {
+        for (let value of hand) {
+            value.destroy();
+        }
+        return [];
+    }
 
     printHands(hand) {
         if (this.playerHand.length) {
