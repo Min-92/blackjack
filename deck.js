@@ -1,4 +1,4 @@
-const suitList = ['◇','♧','♤','♡'];
+const suitList = ['◆','♣','♠','♥'];
 const numberList = ['A','2','3','4','5','6','7','8','9','10','J','Q','K'];
 
 class card {
@@ -24,7 +24,7 @@ module.exports = class Deck {
     }
 
     shuffleCardList(){
-        console.log('shuffling cards...');
+        // console.log('shuffling cards...');
         const newDeck = [...this.cardList];
         for(let i = newDeck.length -1; i > 0 ; i--){
             const randomIndex = Math.floor(Math.random()*(i+1));
