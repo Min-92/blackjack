@@ -1,88 +1,80 @@
-module.exports = class Blackjack{
-    constructor(argumentsObject){
-        this.socket  = argumentsObject.socket;
+module.exports = class Blackjack {
+    constructor(argumentsObject) {
+        this.socket = argumentsObject.socket;
         this.readlineSync = argumentsObject.readlineSync;
         this.rule = argumentsObject.rule;
         this.player = argumentsObject.player;
         this.dealer = argumentsObject.dealer;
         this.deck = argumentsObject.deck;
         this.bettingMoney = argumentsObject.bettingMoney;
+        this.draw = argumentsObject.draw;
     }
 
-    printMoney(player){
+    printMoney(player) {
         console.log(`${player.id}'s money : ${player.money}`);
     }
 
-    printHands(player){
-        process.stdout.write(`${player.id}'s hands : `);
-        for(let value of player.hand){
-            process.stdout.write(`[${value.suit}  ${value.number}] `);
-        }
-        const sum = this.rule.countSum(player.hand);
-        if(sum[1] === 0 || sum[1] > 21){
-            console.log(` sum : ${sum[0]}`);
-        }else{
-            console.log(` sum : ${sum}`);
-        }
+
+    waitPlayersTurn() {
+        return new Promise(resolve => {
+            return resolve(this.player.choiceAction());
+        });
     }
 
-    printDealersHands(dealer){
-        process.stdout.write(`${dealer.id}'s hands : `);
-        process.stdout.write(`[${dealer.hand[0].suit}  ${dealer.hand[0].number}] `);
-        process.stdout.write(`[    ] `);
-        const sum = this.rule.countSum([dealer.hand[0]]);
-        if(sum[1] === 0 || sum[1] > 21){
-            console.log(` sum : ${sum[0]}`);
-        }else{
-            console.log(` sum : ${sum}`);
-        }
-    }
-
-    waitTargetsTurn(targetPlayer){
+    waitDealersTurn() {
         let endturn = true;
-        while(endturn){
-            endturn = targetPlayer.choiceAction();
-            if(endturn === true) this.printHands(targetPlayer);
+        while (endturn) {
+            endturn = this.dealer.choiceAction();
         }
     }
 
-    choiceRestart(){
-        const result = this.readlineSync.question("Play again?\n< 1. Yes > < 2. No > ")
-        if(result !== '1' && result !== '2') {
-            console.log('다시 입력해주세요.');
-            return this.choiceRestart();
-        }
-            return result === '1' ? true : false
+    async choiceRestart() {
+        return await this.draw.choiceRestart();
     }
 
-    finishGame(result){
-        if(result === 'win'){
+    finishGame(result) {
+        if (result === 'win') {
             this.player.money += this.bettingMoney.rewardMoney();
             this.socket.write(`updateMoney$${this.player.id}$${this.player.money}`);
-            console.log(`Get reward!`);
-            this.printMoney(this.player);
-        }else{
+        } else {
             this.socket.write(`updateMoney$${this.player.id}$${this.player.money}`);
             this.bettingMoney.takeMoney();
-            this.printMoney(this.player);
         }
-        return this.choiceRestart();
     }
 
-    playGame(){
+    async topUpMoney() {
+        return await this.draw.topUpMoney();
+    }
+
+    async startGame() {
+        let restart = true;
+        while (restart) {
+            if (!Number(this.player.money)) {
+                this.player.money = await this.topUpMoney();
+                if (!this.player.money) break;
+            }
+            await this.playGame();
+            restart = await this.draw.choiceRestart();
+        }
+        this.draw.gameOver();
+    }
+
+    async playGame() {
+        this.draw.blackjackTable(this.player.money);
         this.deck.shuffleCardList();
-        this.bettingMoney.amount = this.player.betMoney();
+        this.bettingMoney.amount = await this.player.betMoney();
         this.dealer.dealCards();
-        this.printDealersHands(this.dealer);
-        this.printHands(this.player);
-        
-        this.waitTargetsTurn(this.player);
-        this.printHands(this.dealer);
-        this.waitTargetsTurn(this.dealer);
+        this.dealer.printHands('hide');
+        this.player.printHands();
+
+        await this.waitPlayersTurn();
+        this.waitDealersTurn();
+        this.dealer.printHands();
 
         const result = this.rule.decideResult(this.player.hand, this.dealer.hand);
-        console.log(`${result}!`);
+        this.draw.message(`\n     {bold}${result}!{/bold}     \n`, -1);
         this.dealer.returnCards();
+        this.draw.removeChips();
         return this.finishGame(result);
     }
 }
