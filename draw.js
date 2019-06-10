@@ -30,6 +30,19 @@ module.exports = class Draw {
         this.playerHand = [];
     }
 
+    gameOver() {
+        this.screen.destroy();
+        this.setScreen();
+        this.message('\n     {bold}GAME OVER{/bold}     \n', -1);
+        return false;
+    }
+    removeChips() {
+        for (let i = 0; i < this.chip.length; i++) {
+            this.chip[i].destroy();
+        }
+        this.chip = [];
+    }
+
     removeBar() {
         this.bar.destroy();
     }
@@ -39,7 +52,6 @@ module.exports = class Draw {
 
     removePrompt() {
         this.prompt.destroy();
-
     }
 
     setListBar(setCommands) {
@@ -73,7 +85,7 @@ module.exports = class Draw {
             this.renderScreen();
         });
     }
-    
+
     async topUpMoney() {
         this.message('You are broke...\nI will recharge your money.\nBut you need to buy coffee to Wangmin.\nDo you agree?', -1);
         const setCommands = (callback) => {
