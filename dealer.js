@@ -1,10 +1,11 @@
 module.exports = class Dealer {
-    constructor(deck,player,rule) {
+    constructor(deck,player,rule,draw) {
         this.id = 'Dealer';
         this.hand = [];
         this.deck = deck;
         this.rule = rule;
         this.player = player;
+        this.draw = draw;
     }
 
     dealCards() {
@@ -16,8 +17,23 @@ module.exports = class Dealer {
     }
 
     takeCard(){
-        console.log(`${this.id} is taking card...`);
         this.hand.push(this.deck.dealCard());
+    }
+
+    printHands(option){
+        let sum;
+        if(option === 'hide'){
+            this.draw.printDealerHandsHide(this.hand[0]);
+            sum = this.rule.countSum([this.hand[0]]);
+        }else{
+            this.draw.printDealerHands(this.hand);
+            sum = this.rule.countSum(this.hand);
+        }
+        if(sum[1] === 0 || sum[1] > 21){
+            this.draw.setDealerSum(sum[0]);
+        }else{
+            this.draw.setDealerSum(sum);
+        }
     }
 
     choiceAction() {
