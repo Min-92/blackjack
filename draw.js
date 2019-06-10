@@ -73,7 +73,21 @@ module.exports = class Draw {
             this.renderScreen();
         });
     }
-    
+
+    async choiceAction() {
+        const setCommands = (callback) => {
+            return {
+                ' Hit ': () => {
+                    callback('hit');
+                },
+                ' Stay ': () => {
+                    callback('stay');
+                }
+            };
+        };
+        return await this.setListBar(setCommands);
+    }
+
     setDealerSum(sum) {
         if (this.dealerSum) {
             this.dealerSum.destroy();
