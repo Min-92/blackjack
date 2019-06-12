@@ -31,9 +31,10 @@ module.exports = class Draw {
     }
 
     gameOver() {
-        this.screen.destroy();
+        this.removeBox();
+        this.removeBar();
         this.setScreen();
-        this.message('\n     {bold}GAME OVER{/bold}     \n', -1);
+        this.message('\n      {bold}GAME OVER{/bold}     \n  Press {red-fg}esc{/red-fg} to exit  \n', -1);
         return false;
     }
     removeChips() {
@@ -225,7 +226,7 @@ module.exports = class Draw {
             left: `30%+${space}`,
             width: 'shrink+9',
             height: 'shrink',
-            content: `※※※※※※\n※※※※※※\n※※※※※※\n※※※※※※\n※※※※※※`,
+            content: `{center}※※※※※※\n※※※※※※\n※※※※※※\n※※※※※※\n※※※※※※{/center}`,
             tags: true,
             border: {
                 type: 'line'
@@ -434,7 +435,7 @@ module.exports = class Draw {
             left: '85%',
             width: 'shrink+9',
             height: 'shrink',
-            content: `※※※※※※\n※※※※※※\n※※※※※※\n※※※※※※\n※※※※※※`,
+            content: `{center}※※※※※※\n※※※※※※\n※※※※※※\n※※※※※※\n※※※※※※{/center}`,
             tags: true,
             border: {
                 type: 'line'
