@@ -131,3 +131,12 @@
 - user manager
 - game
 
+
+
+### 개선사항
+
+- pakage.json 추가
+- 터미널 사이즈
+- 암호화
+- play.sh
+- 회생 기록 남기기
