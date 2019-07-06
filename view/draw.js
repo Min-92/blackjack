@@ -33,6 +33,7 @@ module.exports = class Draw {
     gameOver() {
         this.removeBox();
         this.removeBar();
+        this.removeScreen();
         this.setScreen();
         this.message('\n      {bold}GAME OVER{/bold}     \n  Press {red-fg}esc{/red-fg} to exit  \n', -1);
         return false;
@@ -42,6 +43,10 @@ module.exports = class Draw {
             this.chip[i].destroy();
         }
         this.chip = [];
+    }
+
+    removeScreen(){
+        this.screen.destroy();
     }
 
     removeBar() {
@@ -492,7 +497,7 @@ module.exports = class Draw {
             this.bar = blessed.listbar({
                 parent: this.screen,
                 top: '55%',
-                left: '10%',
+                left: 'center',
                 width: '80%',
                 height: 'shrink',
                 keys: true,
@@ -523,6 +528,7 @@ module.exports = class Draw {
             });
             this.bar.focus();
             this.renderScreen();
+            this.message('     Recommend playing \n at terminal size 100 * 40 ', 0);
         });
     }
 

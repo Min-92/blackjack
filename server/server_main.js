@@ -25,16 +25,16 @@ class ServerMain {
         }
     }
 
-    login(command) {
-        return this.serverUserManager.login(command);
+    async login(command) {
+        return await this.serverUserManager.login(command);
     }
 
-    signUp(command) {
-        return this.serverUserManager.signUp(command);
+    async signUp(command) {
+        return await this.serverUserManager.signUp(command);
     }
 
-    updateMoney(command){
-        this.serverUserManager.updateMoney(command);
+    async updateMoney(command){
+        await this.serverUserManager.updateMoney(command);
     }
 }
 
@@ -47,16 +47,16 @@ const server = net.createServer((socket) => {
 
     socket.setEncoding('utf8');
 
-    socket.on('data', (data) => {
-        if (!fs.existsSync(`./data/userData.txt`)) {
+    socket.on('data', async (data) => {
+        if (!fs.existsSync(`../data/userData.txt`)) {
             serverUserManager.createUserDataFile();
         }
-        serverMain.serverUserManager.updateUserData();
+        await serverMain.serverUserManager.updateUserData();
         console.log('received data : ' + data);
         console.log(data);
         const command = serverMain.parseData(data);
         const action = command.action;
-        const sendingData = serverMain[`${action}`](command);
+        const sendingData = await serverMain[`${action}`](command);
         
         if(sendingData !== undefined) socket.write(`${JSON.stringify(sendingData)}`);
     });

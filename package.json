@@ -1,0 +1,23 @@
+{
+  "name": "blackjack",
+  "version": "1.0.0",
+  "description": "Blackjack game. that works on tcp ip server",
+  "main": "client.js",
+  "scripts": {
+    "start": "nodejs client.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Min-92/blackjack.git"
+  },
+  "author": "wangmin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Min-92/blackjack/issues"
+  },
+  "homepage": "https://github.com/Min-92/blackjack#readme",
+  "dependencies": {
+    "blessed": "^0.1.81"
+  }
+}

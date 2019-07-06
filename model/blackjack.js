@@ -16,7 +16,7 @@ module.exports = class Blackjack {
 
     waitPlayersTurn() {
         return new Promise(resolve => {
-            return resolve(this.player.choiceAction());
+            resolve(this.player.choiceAction());
         });
     }
 

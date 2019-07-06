@@ -1,15 +1,15 @@
 const net = require('net');
-const UserManager = require('./user_manager.js');
-const Blackjack = require('./blackjack.js');
-const Dealer = require('./dealer.js');
-const Player = require('./player.js');
-const Deck = require('./deck.js');
-const Rule = require('./rule.js');
-const BettingMoney = require('./betting_money.js');
-const Draw = require('./draw.js');
+const UserManager = require('./model/user_manager.js');
+const Blackjack = require('./model/blackjack.js');
+const Dealer = require('./model/dealer.js');
+const Player = require('./model/player.js');
+const Deck = require('./model/deck.js');
+const Rule = require('./model/rule.js');
+const BettingMoney = require('./model/betting_money.js');
+const Draw = require('./view/draw.js');
 
 const socket = net.connect(
-    { host: 'localhost', port: 3000 }
+    { host: 'localhost', port: 5000 }
     , () => {
         main();
     }
