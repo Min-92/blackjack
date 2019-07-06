@@ -9,7 +9,7 @@ const BettingMoney = require('./model/betting_money.js');
 const Draw = require('./view/draw.js');
 
 const socket = net.connect(
-    { host: 'localhost', port: 5000 }
+    { host: 'localhost', port: 3000 }
     , () => {
         main();
     }
