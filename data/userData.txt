@@ -1,1 +1,1 @@
-{"wangmin":{"id":"wangmin","pw":"1234","money":"0"},"okssud":{"id":"okssud","pw":"1234","money":"2000"}}
+{"okssud":{"id":"okssud","pw":"1234","money":1000},"wangmin":{"id":"wangmin","pw":"1234","money":"0"}}

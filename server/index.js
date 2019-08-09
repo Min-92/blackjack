@@ -1,6 +1,6 @@
 const net = require('net');
 const fs = require('fs');
-const ServerUserManager = require('./server_user_manager');
+const ServerUserManager = require('./userManager');
 
 class ServerMain {
     constructor(serverUserManager) {
@@ -48,12 +48,11 @@ const server = net.createServer((socket) => {
     socket.setEncoding('utf8');
 
     socket.on('data', async (data) => {
-        if (!fs.existsSync(`../data/userData.txt`)) {
+        if (!fs.existsSync(__dirname+`/../data/userData.txt`)) {
             serverUserManager.createUserDataFile();
         }
         await serverMain.serverUserManager.updateUserData();
         console.log('received data : ' + data);
-        console.log(data);
         const command = serverMain.parseData(data);
         const action = command.action;
         const sendingData = await serverMain[`${action}`](command);

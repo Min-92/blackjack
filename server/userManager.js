@@ -5,19 +5,16 @@ module.exports = class ServerUserManager {
     }
 
     async createUserDataFile() {
-        const fileExist = await this.myExistFile(`../data`);
+        const fileExist = await this.myExistFile(__dirname+`/../data`);
         if (!fileExist) {
-            // this.fs.mkdirSync(`../data`);
-            this.myMkdir(`../data`);
+            this.myMkdir(__dirname+`/../data`);
         }
-        await this.myWriteFile(`../data/userData.txt`, '{}', 'utf8');
-        // this.fs.writeFileSync(`../data/userData.txt`, '{}', 'utf8');
+        await this.myWriteFile(__dirname+`/../data/userData.txt`, '{}', 'utf8');
     };
 
     async updateUserData() {
-        const dataString = await this.myReadFile(('../data/userData.txt').toString());
-        this.userData = JSON.parse(dataString);
-        // this.userData = JSON.parse(this.fs.readFileSync('../data/userData.txt').toString());
+        const dataString = await this.myReadFile((__dirname+'/../data/userData.txt').toString());
+        if(dataString) this.userData = JSON.parse(dataString);
     }
 
     isMember(command) {
@@ -39,8 +36,7 @@ module.exports = class ServerUserManager {
         const tempUserData = this.userData;
         await this.updateUserData();
         this.userData[id] = tempUserData[id];
-        await this.myWriteFile('../data/userData.txt', JSON.stringify(this.userData));
-        // this.fs.writeFileSync('../data/userData.txt', JSON.stringify(this.userData));
+        await this.myWriteFile(__dirname+'/../data/userData.txt', JSON.stringify(this.userData), 'utf8');
     }
 
     async signUp(command) {
@@ -54,7 +50,6 @@ module.exports = class ServerUserManager {
         }
         this.userData[tempUser.id] = tempUser;
         await this.writeUserData(command.id);
-        console.log(`member ID '${tempUser.id}' is signed up.`);
         return tempUser;
     }
 
@@ -66,7 +61,7 @@ module.exports = class ServerUserManager {
 
     myReadFile(path) {
         return new Promise(resolve => {
-            this.fs.readFile(path, (err, data) => {
+            this.fs.readFile(path, 'utf8', (err, data) => {
                 resolve(data);
             });
         });
@@ -90,7 +85,7 @@ module.exports = class ServerUserManager {
 
     myMkdir(path){
         return new Promise(resolve => {
-            resolve(this.fs.midkr(path, {recursive : true}, (err) => {
+            resolve(this.fs.mkdir(path, {recursive : true}, (err) => {
                 if(err) throw err;
             }));
         });
