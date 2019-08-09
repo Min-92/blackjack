@@ -6,49 +6,39 @@
 
 ## 플레이방법
 
-1. 'blessed'가 설치되어있어야 한다.
+1. 서버를 먼저 구동해 주도록 한다.
 
    ```
-   $ npm install blessed
+   $ node server/index.js
    ```
-
-2. 서버를 먼저 구동해 주도록 한다.
-
-   ```
-   $ nodejs server_main.js
-   or 
-   $ node server_main.js
-   ```
-
-3. 클라이언트를 구동해준다
+   
+2. 클라이언트를 구동해준다
 
    ```
-   $ nodejs main.js
-   or
-   $ node main.js
+   $ node client.js
    ```
-
-4. 회원가입을 한다. (한글, 특수문자는 사용 불가)
+   
+3. 회원가입을 한다. (한글, 특수문자는 사용 불가)
 
    ![main_menu](https://user-images.githubusercontent.com/26920620/59214025-2d021080-8bf1-11e9-8a74-8d23da381ceb.png)
 
-5. 게임시작! 베팅을 한다. 방향키로 이동, 엔터로 선택 or 1~6 숫자 눌러도 선택 가능. Bet 선택시 베팅!
+4. 게임시작! 베팅을 한다. 방향키로 이동, 엔터로 선택 or 1~6 숫자 눌러도 선택 가능. Bet 선택시 베팅!
 
    ![bet](https://user-images.githubusercontent.com/26920620/59214182-836f4f00-8bf1-11e9-9051-7171a2b900da.png)
 
-6. 자동으로 카드를 나눠준다. 합계를 보고 카드를 더 받을지 말지 결정한다. (hit - 한장 더 받기 stay - 받지 않기)
+5. 자동으로 카드를 나눠준다. 합계를 보고 카드를 더 받을지 말지 결정한다. (hit - 한장 더 받기 stay - 받지 않기)
 
    ![choice_action](https://user-images.githubusercontent.com/26920620/59214275-bdd8ec00-8bf1-11e9-918c-4326db9d1518.png)
 
-7. stay 를 선택하거나 합계가 21이 넘어가면 딜러의 카드를 공개하고 결과를 보여준다. 게임을 더할지 그만할지 결정한다.
+6. stay 를 선택하거나 합계가 21이 넘어가면 딜러의 카드를 공개하고 결과를 보여준다. 게임을 더할지 그만할지 결정한다.
 
    ![show_result](https://user-images.githubusercontent.com/26920620/59214540-363fad00-8bf2-11e9-99e0-80b17ac7d9ec.png)
 
-8. 파산상태에서 게임을 시작하면 메세지와 함께 돈을 더 충전할지 여부를 결정할 수 있다.
+7. 파산상태에서 게임을 시작하면 메세지와 함께 돈을 더 충전할지 여부를 결정할 수 있다.
 
    ![be_broken](https://user-images.githubusercontent.com/26920620/59214660-7dc63900-8bf2-11e9-80d2-f5cbaad105ea.png)
 
-9. Exit 나 충전 받지 않기를 선택하면 게임을 종료 할 수 있다.
+8. Exit 나 충전 받지 않기를 선택하면 게임을 종료 할 수 있다.
 
    ![game_over](https://user-images.githubusercontent.com/26920620/59214767-b9610300-8bf2-11e9-8d8f-3322606f592a.png)
 
